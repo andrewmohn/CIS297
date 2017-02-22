@@ -21,7 +21,7 @@ namespace bettingSimulator
         {
             int result = 0;
 
-            if(value == this)
+            if(true)
             {
                 result = 0;
             }

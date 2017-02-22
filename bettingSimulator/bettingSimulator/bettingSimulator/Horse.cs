@@ -11,7 +11,7 @@ namespace bettingSimulator
         Random random;
         int time;
 
-        Horse()
+        public Horse()
         {
             random = new Random();
             time = 0;

@@ -11,7 +11,7 @@ namespace bettingSimulator
         Deck theDeck;
         PlayingCard[] hand;
 
-        FiveCardStud()
+        public FiveCardStud()
         {
             hand = new PlayingCard[5];
             theDeck.shuffle();

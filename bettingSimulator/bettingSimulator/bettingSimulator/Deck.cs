@@ -11,7 +11,7 @@ namespace bettingSimulator
         private PlayingCard[] thisDeck;
         private int topCard;
 
-        Deck()
+        public Deck()
         {
             topCard = 0;
             thisDeck = new PlayingCard[52];
@@ -20,7 +20,7 @@ namespace bettingSimulator
             {
                 for (int j = 0; j < 13; j++, k++)
                 {
-                    thisDeck[k].setValues((suite)i, (value)j);
+                    thisDeck[k] = new PlayingCard((suite)i, (value)j);
                 }
             }
         }

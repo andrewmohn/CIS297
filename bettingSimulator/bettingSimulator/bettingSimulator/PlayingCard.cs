@@ -11,7 +11,7 @@ namespace bettingSimulator
         suite cardSuite;
         value cardValue;
 
-        PlayingCard(suite setSuite, value setValue)
+        public PlayingCard(suite setSuite, value setValue)
         {
             cardSuite = setSuite;
             cardValue = setValue;

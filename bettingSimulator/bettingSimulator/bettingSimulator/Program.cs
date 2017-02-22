@@ -16,9 +16,20 @@ namespace bettingSimulator
         [STAThread]
         static void Main()
         {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+            Deck testDeck = new Deck();
+            testDeck.shuffle();
+
+            for (int i = 0; i < 52; i++)
+            {
+                Console.WriteLine(testDeck.drawCard().card());
+            }
+
+            Console.ReadKey();
         }
     }
 }

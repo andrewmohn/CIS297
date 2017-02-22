@@ -1,1 +1,9 @@
 C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\bin\Debug\bettingSimulator.exe.config
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.csprojResolveAssemblyReference.cache
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.Properties.Resources.resources
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.csproj.GenerateResource.Cache
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\bin\Debug\bettingSimulator.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\bin\Debug\bettingSimulator.pdb
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.pdb
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\bettingSimulator\bettingSimulator\obj\Debug\bettingSimulator.Form1.resources
