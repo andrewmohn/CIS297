@@ -6,6 +6,8 @@ using System.Windows.Forms;
 
 namespace bettingSimulator
 {
+    enum suite { hearts, diamonds, clubs, spades };
+    enum value { ace, two, three, four, five, six, seven, eight, nine, ten, jack, queen, king };
     static class Program
     {
         /// <summary>

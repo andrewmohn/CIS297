@@ -8,10 +8,25 @@ namespace bettingSimulator
 {
     class gameTemplate<T> : IComparable<T>
     {
-        public int CompareTo(T value)
+        double bet;
+        
+
+        public gameTemplate(T game)
         {
             
-            return 
+        }
+
+        //CompareTo returns -1 if "this" is lower, 0 if equal, 1 if greater
+        public int CompareTo(T value)
+        {
+            int result = 0;
+
+            if(value == this)
+            {
+                result = 0;
+            }
+
+            return result;
         }
     }
 }
