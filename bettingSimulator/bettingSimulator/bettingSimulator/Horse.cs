@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bettingSimulator
+namespace bettingSimulator 
 {
-    class Horse
+    class Horse : IComparable<Horse>
     {
-        Random random;
-        int time;
+        private Random random;
+        private int time;
+
+        public int Time
+        {
+            get { return time; }
+        }
 
         public Horse()
         {
@@ -21,6 +26,19 @@ namespace bettingSimulator
         {
             time = random.Next(0, 100);
             return time;
+        }
+
+        public int CompareTo(Horse other)
+        {
+            if(other.Time > time)
+            {
+                return -1;
+            }
+            else if(other.Time < time)
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 }
