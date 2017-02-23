@@ -1,11 +1,11 @@
 ﻿using System;
-
+//Misc comment
 namespace bettingSimulator
 {
     //Card enum for poker hands
     enum suite { clubs, diamonds, hearts, spades };
     enum value { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace };
-
+    
     static class Program
     {
         /// <summary>
