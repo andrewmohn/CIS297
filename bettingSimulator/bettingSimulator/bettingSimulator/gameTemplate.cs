@@ -8,7 +8,6 @@ namespace bettingSimulator
 {
     class gameTemplate<T> where T: class, IComparable<T>, new()
     {
-        double bet, winnings;
         T myGame, otherGame;
 
         public gameTemplate()
@@ -16,12 +15,15 @@ namespace bettingSimulator
             myGame = new T();
         }
         
-        //Returns true if you win, false if you loose
+        
         public bool runGame()
         {
+            //This little oddity of having the "otherGame" declared in this part is to insure that the poker
+            //game has a hidden opponant hand.
             otherGame = new T();
 
-            if(myGame.CompareTo(otherGame) == 1)
+            //Returns true if you win, false if you loose
+            if (myGame.CompareTo(otherGame) == 1)
             {
                 //I win
                 return true;

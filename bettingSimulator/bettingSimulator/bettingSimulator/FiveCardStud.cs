@@ -10,12 +10,12 @@ namespace bettingSimulator
 
     class FiveCardStud : IComparable<FiveCardStud>
     {
-        Deck theDeck;
+        static Deck theDeck = new Deck(); //A static deck shared among each object allows each game to be drawn with no duplicates
         PlayingCard[] hand;
 
+        //Create a hand from the deck. 
         public FiveCardStud()
         {
-            theDeck = new Deck();
             hand = new PlayingCard[5];
             theDeck.shuffle();
 
@@ -25,6 +25,7 @@ namespace bettingSimulator
             hand[3] = theDeck.drawCard();
             hand[4] = theDeck.drawCard();
 
+            //Display the hand
             for(int i = 0; i < 5; i++)
             {
                 Console.WriteLine(hand[i].card());
@@ -49,16 +50,9 @@ namespace bettingSimulator
                         countCard++;
                     }
                 }
-                //4 on the countCard occurs with all cards being the same
-                if(countCard == 4)
-                {
-                    //Return this value as there cannot be a higher possible score
-                    //Due to the absence of jokers, this is added for completeness
-                    return hands.fiveOfAKind;
-                }
                 //As we have not checked for straight flush yet, four of a kind is the highest
                 //value possible.
-                else if(countCard == 3)
+                if(countCard == 3)
                 {
                     thisHand = hands.fourOfAKind;
                 }
@@ -159,6 +153,7 @@ namespace bettingSimulator
             return thisHand;
         }
 
+        //A short function to find the highest card
         public PlayingCard highCard()
         {
             PlayingCard high = new PlayingCard(suite.clubs, value.two);
@@ -173,8 +168,10 @@ namespace bettingSimulator
             return high;
         }
 
+        //To find which hand is valued better
         public int CompareTo(FiveCardStud other)
         {
+            //get the score of the hand (pair, two pair, etc. . .)
             hands score = valueHand();
             hands otherScore = other.valueHand();
 
@@ -187,6 +184,7 @@ namespace bettingSimulator
                 return 1;
             }
 
+            //If they are tied, we get the high card's value
             if(other.highCard().getValue() > highCard().getValue())
             {
                 return -1;
@@ -196,6 +194,7 @@ namespace bettingSimulator
                 return 1;
             }
 
+            //And if we have the same value of high card, we go by suite
             if(other.highCard().getSuite() > highCard().getSuite())
             {
                 return -1;
@@ -205,6 +204,7 @@ namespace bettingSimulator
                 return 1;
             }
 
+            //And if somehow all those tied, we return 0 and everyone looses.
             return 0;
         }
     }

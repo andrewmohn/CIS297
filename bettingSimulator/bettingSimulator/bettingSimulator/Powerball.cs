@@ -9,7 +9,8 @@ namespace bettingSimulator
     class Powerball : IComparable<Powerball>
     {
         public int theNumber;
-        static Random random = new Random();
+        static Random random = new Random(); //Static random to insure that the fast execution of the program
+        // does not result in the same number every time. (Found out in testing)
         public Powerball()
         {
             theNumber = random.Next(100000, 1000000);

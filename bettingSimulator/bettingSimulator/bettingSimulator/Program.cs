@@ -25,7 +25,10 @@ namespace bettingSimulator
                 {
                     gameTemplate<FiveCardStud> pokerGame = new gameTemplate<FiveCardStud>();
                     Console.WriteLine("Place your bet: ");
+
+                    //The winning methods are seprate from game logic, so they stay outside the gameTemplate
                     bet = Convert.ToDouble(Console.ReadLine());
+                    //You win your money and the other guy's
                     if (pokerGame.runGame())
                         winnings += 2 * bet;
                     else
@@ -33,7 +36,9 @@ namespace bettingSimulator
                 }
                 else if(decision == "powerball")
                 {
+
                     gameTemplate<Powerball> powerballGame = new gameTemplate<Powerball>();
+                    //powerball only has the one winnings scheme
                     if (powerballGame.runGame())
                         winnings += 1000000;
                     else
@@ -41,10 +46,15 @@ namespace bettingSimulator
                 }
                 else if(decision == "horse racing")
                 {
+                    //Really doesn't matter which one you pick, cause random
+                    Console.WriteLine("Pick horse one or two.");
+                    Console.ReadLine();
+
                     gameTemplate<Horse> horseGame = new gameTemplate<Horse>();
                     Console.WriteLine("Place your bet: ");
                     bet = Convert.ToDouble(Console.ReadLine());
 
+                    //Winnings are same as poker
                     if (horseGame.runGame())
                         winnings += 2 * bet;
                     else
