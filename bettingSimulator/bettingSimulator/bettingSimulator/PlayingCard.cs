@@ -24,6 +24,16 @@ namespace bettingSimulator
             return;
         }
 
+        public value getValue()
+        {
+            return cardValue;
+        }
+
+        public suite getSuite()
+        {
+            return cardSuite;
+        }
+
         public string card()
         {
             return cardValue.ToString() + " " + cardSuite.ToString();

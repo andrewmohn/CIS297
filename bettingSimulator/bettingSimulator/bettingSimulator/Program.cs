@@ -6,8 +6,10 @@ using System.Windows.Forms;
 
 namespace bettingSimulator
 {
-    enum suite { hearts, diamonds, clubs, spades };
-    enum value { ace, two, three, four, five, six, seven, eight, nine, ten, jack, queen, king };
+    //Card enum for poker hands
+    enum suite { clubs, diamonds, hearts, spades };
+    enum value { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace };
+
     static class Program
     {
         /// <summary>
@@ -21,13 +23,9 @@ namespace bettingSimulator
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            Deck testDeck = new Deck();
-            testDeck.shuffle();
+            FiveCardStud test = new FiveCardStud();
 
-            for (int i = 0; i < 52; i++)
-            {
-                Console.WriteLine(testDeck.drawCard().card());
-            }
+
 
             Console.ReadKey();
         }
