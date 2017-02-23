@@ -24,6 +24,11 @@ namespace bettingSimulator
             hand[2] = theDeck.drawCard();
             hand[3] = theDeck.drawCard();
             hand[4] = theDeck.drawCard();
+
+            for(int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(hand[i].card());
+            }
         }
 
         //A function that finds the value of the hand

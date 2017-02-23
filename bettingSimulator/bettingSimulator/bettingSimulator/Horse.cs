@@ -19,7 +19,7 @@ namespace bettingSimulator
         public Horse()
         {
             random = new Random();
-            time = 0;
+            run();
         }
          
         public int run()
@@ -30,6 +30,7 @@ namespace bettingSimulator
 
         public int CompareTo(Horse other)
         {
+            Console.WriteLine($"Your horse's time: {time} Other horse's time: {other.Time}");
             if(other.Time > time)
             {
                 return -1;

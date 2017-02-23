@@ -8,13 +8,29 @@ namespace bettingSimulator
 {
     class gameTemplate<T> where T: class, IComparable<T>, new()
     {
-        double bet;
-        T myGame, game1, game2, game3, game4;
+        double bet, winnings;
+        T myGame, otherGame;
 
-        public gameTemplate<T>()
-        public gameTemplate(T game)
+        public gameTemplate()
         {
             myGame = new T();
+        }
+        
+        //Returns true if you win, false if you loose
+        public bool runGame()
+        {
+            otherGame = new T();
+
+            if(myGame.CompareTo(otherGame) == 1)
+            {
+                //I win
+                return true;
+            }
+            else
+            {
+                //I loose
+                return false;
+            }
         }
     }
 }
