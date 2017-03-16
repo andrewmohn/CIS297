@@ -1,1 +1,6 @@
 C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\bin\Debug\TakeHomeExam.exe.config
+C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\bin\Debug\TakeHomeExam.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\bin\Debug\TakeHomeExam.pdb
+C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\obj\Debug\TakeHomeExam.csprojResolveAssemblyReference.cache
+C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\obj\Debug\TakeHomeExam.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\TakeHomeExam\TakeHomeExam\obj\Debug\TakeHomeExam.pdb

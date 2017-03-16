@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TakeHomeExam
 {
-    class PlayerHand
+    class PlayerHand : IComparable<PlayerHand>
     {
         //myHand holds the two dealt cards
         private PlayingCard[] myHand;
@@ -17,163 +17,516 @@ namespace TakeHomeExam
         //Holds the top valued card i.e. the 7 in sevens over twos.
         private PlayingCard topScoringCard;
 
-        private void sortMyHand()
+        public hands HandValue { get { return ScoredHandType; } }
+        public PlayingCard HandHighValue { get { return topScoringCard; } }
+
+        public PlayerHand()
+        {
+            //Two cards may be in a individual hand
+            myHand = new PlayingCard[2];
+            theHand = new PlayingCard[7];
+        }
+
+        public void printAndScoreHand()
+        {
+            scoreTheHand();
+            Console.Write("Your scored hand is: ");
+            for(int i = 0; i < 7; i++)
+            {
+                Console.Write(theHand[i].ToString() + " ");
+            }
+
+            Console.WriteLine($"\nIt is evaluated as a {HandValue}.");
+        }
+
+        public void takeCard(PlayingCard card)
+        {
+            if(myHand[0] == null)
+            {
+                myHand[0] = card;
+            }
+            else if(myHand[1] == null)
+            {
+                myHand[1] = card;
+            }
+        }
+
+        //Pass the table cards to the player's hand for scoring.
+        public void getTableCards(PlayingCard[] table)
+        {
+            theHand[0] = myHand[0];
+            theHand[1] = myHand[1];
+            theHand[2] = table[0];
+            theHand[3] = table[1];
+            theHand[4] = table[2];
+            theHand[5] = table[3];
+            theHand[6] = table[4];
+
+            //Sort them since all scoring systems expect it
+            sortTheHand();
+        }
+
+        private void sortTheHand()
         {
             PlayingCard temp;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
-                for (int j = i; j < 5; j++)
+                for (int j = i; j < 7; j++)
                 {
-                    if (myHand[i].getValue() > myHand[j].getValue())
+                    if (theHand[i].CardValue > theHand[j].CardValue)
                     {
-                        temp = myHand[i];
-                        myHand[i] = myHand[j];
-                        myHand[j] = temp;
+                        temp = theHand[i];
+                        theHand[i] = theHand[j];
+                        theHand[j] = temp;
                     }
                 }
             }
         }
 
-        public hands valueHand()
+        private void scoreTheHand()
         {
-            bool flush = true;
-            int countCard = 0;
-            suite checkFlush;
-            hands thisHand = hands.highCard;
+            findStraightFlush();
+            findFourOfAKind();
+            findFullHouse();
+            findFlush();
+            findStraight();
+            findThreeOfAKind();
+            findTwoPair();
+            findPair();
+            findHighCard();
+        }
 
-            //This loop finds multiple card hand values
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = i + 1; j < 5; j++)
-                {
-                    if (hand[i].getValue() == hand[j].getValue())
-                    {
-                        countCard++;
-                    }
-                }
-                //As we have not checked for straight flush yet, four of a kind is the highest
-                //value possible.
-                if (countCard == 3)
-                {
-                    thisHand = hands.fourOfAKind;
-                }
-                else if (countCard == 2 && thisHand == hands.onePair)
-                {
-                    //if we have found one pair and then find three of a kind,
-                    //we have found a full house.
-                    thisHand = hands.fullHouse;
-                }
-                //If the hand is valued at four of a kind we keep the higher value
-                else if (countCard == 2 && thisHand < hands.threeOfAKind)
-                {
-                    thisHand = hands.threeOfAKind;
-                }
-                else if (countCard == 1 && thisHand == hands.onePair)
-                {
-                    //If thisHand is one pair, then a second pair being counted requires that
-                    //that pair be of a different value
-                    thisHand = hands.twoPair;
-                }
-                else if (countCard == 1 && thisHand < hands.onePair)
-                {
-                    thisHand = hands.onePair;
-                }
+        private void findStraightFlush()
+        {
+            int straightCount = 0;
 
-                countCard = 0;
-            }
-            //If we have a three of a kind, we need to check for a missed full house
-            if (thisHand == hands.threeOfAKind && thisHand < hands.fullHouse)
+            for (int i = 6; i > 0; i--)
             {
-                for (int i = 0; i < 4; i++)
+                //If any card Value is not one less than the next Value, it's not a straight
+                if (theHand[i].CardValue - 1 == theHand[i - 1].CardValue)
                 {
-                    for (int j = i + 1; j < 5; j++)
+                    straightCount++;
+                }
+                else
+                {
+                    straightCount = 0;
+                }
+                //If straightCount reaches 4, it's a straight
+                if(straightCount == 4)
+                {
+                    //But it also needs to be a flush
+                    Suit check = theHand[i-1].CardSuit;
+
+                    //Starting from i+1, we check the previous five cards to be the same suit
+                    for (int j = i - 1 ; j < i + 4; j++)
                     {
-                        if (hand[i] == hand[j])
+                        //If any fail we return without scoring
+                        if (theHand[i].CardSuit != check)
                         {
-                            countCard++;
+                            return;
                         }
                     }
-                    if (countCard == 1)
-                    {
-                        //If we count a pair, then we have a full house
-                        return hands.fullHouse;
-                    }
-                    else if (countCard == 2 && hand[i].getValue() == hand[i + 1].getValue())
-                    {
-                        //If we have counted three of a kind from hand[i], and
-                        //hand[i+1] is of the same type then we must avoid "double counting" the
-                        //card.
-                        i++;
-                        //i++ will "skip" one card and move to counting the third card in the hand
-                        //Even if three cards of the same type are in a row, this will skip them.
-                    }
-                    countCard = 0;
+                    //If they all pass we score and return
+                    ScoredHandType = hands.straightFlush;
+                    topScoringCard = theHand[i+4];
+                    return;
                 }
             }
+            return;         
+        }
 
-            //Finally, we check for straights and flushes.
+        private void findFourOfAKind()
+        {
+            //If the current Value is greater
 
-            //Reset the card count
-            countCard = 0;
-            //All five cards must be the same suite to be a flush
-            checkFlush = hand[0].getSuite();
-
-
-            for (int i = 0; i < 5; i++)
+            if (ScoredHandType > hands.fourOfAKind)
             {
-                //Check to see if four PlayingCards have a following value card
-                for (int j = 0; j < 5; j++)
+                return;
+            }
+
+            PlayingCard fourCard;
+            int cardCount;
+
+            //We can save on a few iterations since one of the first two cards must be in the whole set
+            for (int i = 6; i > 2; i--)
+            {
+                //Get the card we are checking for FOUR OF A KIND.
+                fourCard = theHand[i];
+                cardCount = 0;
+
+                for (int j = i; j >= 0; j--)
                 {
-                    if (hand[i].getValue() + 1 == hand[j].getValue())
+                    //Compare values
+                    if (theHand[i].CardValue == theHand[j].CardValue)
                     {
-                        //If we find the value + 1
-                        countCard++;
+                        //If a match is found
+                        cardCount++;
                     }
                 }
-                if (hand[i].getSuite() != checkFlush)
+
+                //The algorithim will always increment once. More than three or >= 4
+                if (cardCount > 3)
                 {
-                    flush = false;
+                    ScoredHandType = hands.fourOfAKind;
+                    topScoringCard = fourCard;
+                }
+            }
+        }
+
+        private void findFullHouse()
+        {
+            if (ScoredHandType > hands.fullHouse)
+            {
+                return;
+            }
+
+            PlayingCard threeOf, twoOf;
+            bool foundOne = false;
+            int cardCount;
+
+            threeOf = null;
+            twoOf = null;
+
+            for (int i = 6; i > 0; i--)
+            {
+                //Get the first card we are checking for three of a kind.
+                threeOf = theHand[i];
+                cardCount = 0;
+
+                for (int j = i; j >= 0; j--)
+                {
+                    //Compare values
+                    if (theHand[i].CardValue == theHand[j].CardValue)
+                    {
+                        //If a match is found
+                        cardCount++;
+                    }
+                }
+
+                //The algorithim will always increment once. If we have any more than two, we have three.
+                if (cardCount > 2)
+                {
+                    foundOne = true;
                 }
             }
 
-            //If there are five sequential cards
-            if (countCard == 4 && flush)
+            //Find a pair only if three of a kind has already been found
+            if (foundOne)
             {
-                return hands.straightFlush;
-            }
-            //If the hand is a flush and the value is less than that
-            else if (flush && thisHand < hands.flush)
-            {
-                return hands.flush;
-            }
-            else if (countCard == 4)
-            {
-                return hands.straight;
-            }
+                for (int i = 6; i > 0; i--)
+                {
+                    //Only check if the card is not the already seen card.
+                    if (theHand[i] != threeOf)
+                    {
+                        twoOf = theHand[i];
+                        cardCount = 0;
 
-            return thisHand;
+                        for (int j = i; j >= 0; j--)
+                        {
+                            //Compare values
+                            if (theHand[i].CardValue == theHand[j].CardValue)
+                            {
+                                //If a match is found
+                                cardCount++;
+                            }
+                        }
+
+                        //If we get a second pair
+                        if (cardCount > 1)
+                        {
+                            //We get the score and the higher of the two
+                            ScoredHandType = hands.fullHouse;
+                            topScoringCard = threeOf.CardValue > twoOf.CardValue ? threeOf : twoOf;
+                        }
+                    }
+                }
+            }
         }
 
-
-
-        private string findTwoPair()
+        private void findFlush()
         {
+            if (ScoredHandType > hands.flush)
+            {
+                return;
+            }
+            int hearts = 0, diamonds = 0, spades = 0, clubs = 0;
 
+            for (int i = 6; i > 0; i--)
+            {
+                if (theHand[i].CardSuit == Suit.hearts)
+                {
+                    hearts++;
+                }
+                else if( theHand[i].CardSuit == Suit.clubs)
+                {
+                    clubs++;
+                }
+                else if(theHand[i].CardSuit == Suit.diamonds)
+                {
+                    diamonds++;
+                }
+                else if(theHand[i].CardSuit == Suit.spades)
+                {
+                    spades++;
+                }
+            }
+
+            if(hearts > 4)
+            {
+                ScoredHandType = hands.flush;
+                topScoringCard = highestCardOf(Suit.hearts);
+            }
+            else if (spades > 4)
+            {
+                ScoredHandType = hands.flush;
+                topScoringCard = highestCardOf(Suit.spades);
+            }
+            else if (diamonds > 4)
+            {
+                ScoredHandType = hands.flush;
+                topScoringCard = highestCardOf(Suit.diamonds);
+            }
+            else if (clubs > 4)
+            {
+                ScoredHandType = hands.flush;
+                topScoringCard = highestCardOf(Suit.clubs);
+            }
+
+            return;
         }
 
-        private string findPair()
+        private void findStraight()
         {
+            int straightCount = 0;
 
+            //We need to count down to get the highest possible straight
+            for (int i = 6; i > 0; i--)
+            {
+                //If any card Value is not one less than the next Value, it's not a straight
+                if (theHand[i].CardValue - 1 == theHand[i - 1].CardValue)
+                {
+                    straightCount++;
+                }
+                else
+                {
+                    straightCount = 0;
+                }
+                //If straightCount reaches 4, it's a straight
+                if (straightCount == 4)
+                {
+                    ScoredHandType = hands.straight;
+                    topScoringCard = theHand[i+4];
+                }
+            }
         }
 
-        private string findHighCard()
+        private void findThreeOfAKind()
         {
-            string high;
+            //If the current Value is greater
 
-            high = $"high{myHand[5].getValue().ToString()}";
+            if (ScoredHandType > hands.threeOfAKind)
+            {
+                return;
+            }
 
-            return high;
+            PlayingCard trioCard;
+            int cardCount;
+
+            for (int i = 6; i > 0; i--)
+            {
+                //Get the card we are checking for a pair.
+                trioCard = theHand[i];
+                cardCount = 0;
+
+                for (int j = i; j >= 0; j--)
+                {
+                    //Compare values
+                    if (theHand[i].CardValue == theHand[j].CardValue)
+                    {
+                        //If a match is found
+                        cardCount++;
+                    }
+                }
+
+                //The algorithim will always increment once. If any more than once, a pair exists.
+                if (cardCount > 2 && trioCard.CardValue > topScoringCard.CardValue)
+                {
+                    ScoredHandType = hands.threeOfAKind;
+                    topScoringCard = trioCard;
+                }
+            }
+        }
+
+        private void findTwoPair()
+        {
+            if(ScoredHandType > hands.twoPair)
+            {
+                return;
+            }
+
+            PlayingCard pairOne, pairTwo;
+            bool foundOne = false;
+            int cardCount;
+
+            pairOne = null;
+            pairTwo = null;
+
+            for (int i = 6; i > 0; i--)
+            {
+                //Get the first card we are checking for a pair.
+                pairOne = theHand[i];
+                cardCount = 0;
+
+                for (int j = i; j >= 0; j--)
+                {
+                    //Compare values
+                    if (theHand[i].CardValue == theHand[j].CardValue)
+                    {
+                        //If a match is found
+                        cardCount++;
+                    }
+                }
+
+                //The algorithim will always increment once. If any more than once, a pair exists.
+                if (cardCount > 1)
+                {
+                    foundOne = true;
+                }
+            }
+
+            //Find second pair only if a pair has already been found
+            if (foundOne)
+            {
+                for (int i = 6; i > 0; i--)
+                {
+                    //Only check if the card is not the already seen card.
+                    if (theHand[i] != pairOne)
+                    {
+                        pairTwo = theHand[i];
+                        cardCount = 0;
+
+                        for (int j = i; j >= 0; j--)
+                        {
+                            //Compare values
+                            if (theHand[i].CardValue == theHand[j].CardValue)
+                            {
+                                //If a match is found
+                                cardCount++;
+                            }
+                        }
+
+                        //If we get a second pair
+                        if (cardCount > 1)
+                        {
+                            //We get the score and the higher of the two
+                            ScoredHandType = hands.twoPair;
+                            topScoringCard = pairOne.CardValue > pairTwo.CardValue ? pairOne : pairTwo;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void findPair()
+        {
+            //If the current Value is greater
+
+            if(ScoredHandType > hands.onePair)
+            {
+                return;
+            }
+
+            PlayingCard pairCard;
+            int cardCount;
+
+            for(int i = 6; i > 0; i--)
+            {
+                //Get the card we are checking for a pair.
+                pairCard = theHand[i];
+                cardCount = 0;
+
+                for(int j = i; j >= 0; j--)
+                {
+                    //Compare values
+                    if(theHand[i].CardValue == theHand[j].CardValue)
+                    {
+                        //If a match is found
+                        cardCount++;
+                    }
+                }
+
+                //The algorithim will always increment once. If any more than once, a pair exists.
+                if(cardCount > 1 && pairCard.CardValue > topScoringCard.CardValue)
+                {
+                    ScoredHandType = hands.onePair;
+                    topScoringCard = pairCard;
+                }
+            }
+        }
+
+        //Finds the high card in the whole hand
+        private void findHighCard()
+        {
+            if(ScoredHandType > hands.highCard)
+            {
+                return;
+            }
+
+            ScoredHandType = hands.highCard;
+            topScoringCard = theHand[6];
+        }
+
+        //Returns the higher Value card in your own hand
+        private Value myHighCard()
+        {
+            return myHand[0].CardValue > myHand[1].CardValue ? myHand[0].CardValue : myHand[1].CardValue;
+        }
+
+        //If this function returns -1, 'this' looses
+        public int CompareTo(PlayerHand opponent)
+        {
+            if (HandValue < opponent.HandValue)
+            {
+                return -1;
+            }
+            else if (HandValue > opponent.HandValue)
+            {
+                return 1;
+            }
+            else if (topScoringCard.CardValue < opponent.topScoringCard.CardValue)
+            {
+                return -1;
+            }
+            else if (topScoringCard.CardValue > opponent.topScoringCard.CardValue)
+            {
+                return 1;
+            }
+            else if(myHighCard() < opponent.myHighCard())
+            {
+                return -1;
+            }
+            else if (myHighCard() > opponent.myHighCard())
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private PlayingCard highestCardOf(Suit suit)
+        {
+            for(int i = 6; i >= 0; i--)
+            {
+                if(theHand[i].CardSuit == suit)
+                {
+                    return theHand[i];
+                }
+            }
+
+            return null;
         }
     }
 }

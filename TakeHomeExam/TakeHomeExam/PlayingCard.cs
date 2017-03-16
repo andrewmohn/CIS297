@@ -6,40 +6,26 @@ using System.Threading.Tasks;
 
 namespace TakeHomeExam
 {
-    enum suite { clubs, diamonds, hearts, spades };
-    enum value { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace };
+    enum Suit { clubs, diamonds, hearts, spades };
+    enum Value { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace };
 
     class PlayingCard
     {
-        suite cardSuite;
-        value cardValue;
+        private Suit cardSuit;
+        private Value cardValue;
 
-        public PlayingCard(suite setSuite, value setValue)
+        public Suit CardSuit {  get { return cardSuit; } private set { cardSuit = value; } }
+        public Value CardValue { get { return cardValue; } private set { cardValue = value; } }
+
+        public PlayingCard(Suit setSuit, Value setValue)
         {
-            cardSuite = setSuite;
+            cardSuit = setSuit;
             cardValue = setValue;
         }
 
-        public void setValues(suite setSuite, value setValue)
+        public override string ToString()
         {
-            cardSuite = setSuite;
-            cardValue = setValue;
-            return;
-        }
-
-        public value getValue()
-        {
-            return cardValue;
-        }
-
-        public suite getSuite()
-        {
-            return cardSuite;
-        }
-
-        public string card()
-        {
-            return cardValue.ToString() + " " + cardSuite.ToString();
+            return cardValue.ToString() + " " + cardSuit.ToString();
         }
     }
 }
