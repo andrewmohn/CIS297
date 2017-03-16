@@ -27,6 +27,7 @@ namespace TakeHomeExam
             theHand = new PlayingCard[7];
         }
 
+        //For testing
         public void printAndScoreHand()
         {
             scoreTheHand();
@@ -99,38 +100,30 @@ namespace TakeHomeExam
 
         private void findStraightFlush()
         {
-            int straightCount = 0;
+            int straightCount;
+            Value lastValue;
+            Suit check;
 
             for (int i = 6; i > 0; i--)
             {
-                //If any card Value is not one less than the next Value, it's not a straight
-                if (theHand[i].CardValue - 1 == theHand[i - 1].CardValue)
-                {
-                    straightCount++;
-                }
-                else
-                {
-                    straightCount = 0;
-                }
-                //If straightCount reaches 4, it's a straight
-                if(straightCount == 4)
-                {
-                    //But it also needs to be a flush
-                    Suit check = theHand[i-1].CardSuit;
+                straightCount = 0;
+                check = theHand[i].CardSuit;
+                lastValue = theHand[i].CardValue;
 
-                    //Starting from i+1, we check the previous five cards to be the same suit
-                    for (int j = i - 1 ; j < i + 4; j++)
+                for(int j = i - 1; j >= 0; j--)
+                {
+                    if (theHand[j].CardSuit == check && theHand[j].CardValue == lastValue - 1)
                     {
-                        //If any fail we return without scoring
-                        if (theHand[i].CardSuit != check)
-                        {
-                            return;
-                        }
+                        lastValue = theHand[j].CardValue;
+                        straightCount++;
                     }
-                    //If they all pass we score and return
-                    ScoredHandType = hands.straightFlush;
-                    topScoringCard = theHand[i+4];
-                    return;
+
+                    if(straightCount > 3)
+                    {
+                        ScoredHandType = hands.straightFlush;
+                        topScoringCard = theHand[i];
+                        return;
+                    }
                 }
             }
             return;         
@@ -252,6 +245,7 @@ namespace TakeHomeExam
             }
             int hearts = 0, diamonds = 0, spades = 0, clubs = 0;
 
+            //Count the number of each suit in the hand
             for (int i = 6; i > 0; i--)
             {
                 if (theHand[i].CardSuit == Suit.hearts)
@@ -272,22 +266,23 @@ namespace TakeHomeExam
                 }
             }
 
-            if(hearts > 4)
+            //If you have enough to make a flush, count it.
+            if(hearts > 3)
             {
                 ScoredHandType = hands.flush;
                 topScoringCard = highestCardOf(Suit.hearts);
             }
-            else if (spades > 4)
+            else if (spades > 3)
             {
                 ScoredHandType = hands.flush;
                 topScoringCard = highestCardOf(Suit.spades);
             }
-            else if (diamonds > 4)
+            else if (diamonds > 3)
             {
                 ScoredHandType = hands.flush;
                 topScoringCard = highestCardOf(Suit.diamonds);
             }
-            else if (clubs > 4)
+            else if (clubs > 3)
             {
                 ScoredHandType = hands.flush;
                 topScoringCard = highestCardOf(Suit.clubs);
@@ -298,26 +293,41 @@ namespace TakeHomeExam
 
         private void findStraight()
         {
-            int straightCount = 0;
+            if(ScoredHandType > hands.straight)
+            {
+                return;
+            }
+
+            int straightCount;
+            Value lastValue;
 
             //We need to count down to get the highest possible straight
+            //Start the top end of the hand
+
             for (int i = 6; i > 0; i--)
             {
-                //If any card Value is not one less than the next Value, it's not a straight
-                if (theHand[i].CardValue - 1 == theHand[i - 1].CardValue)
+                //Check each card to see if it starts a straight
+                straightCount = 0;
+                lastValue = theHand[i].CardValue;
+                for (int j = i - 1; j >= 0; j--)
                 {
-                    straightCount++;
+                    //If the current lastValue has a following value
+                    if(theHand[j].CardValue == lastValue - 1)
+                    {
+                        //+1
+                        straightCount++;
+                        lastValue = theHand[j].CardValue;
+                    }
+
+                    //Count high enough and we have a straight
+                    if (straightCount > 3)
+                    {
+                        ScoredHandType = hands.straight;
+                        topScoringCard = theHand[i];
+                        return;
+                    }
                 }
-                else
-                {
-                    straightCount = 0;
-                }
-                //If straightCount reaches 4, it's a straight
-                if (straightCount == 4)
-                {
-                    ScoredHandType = hands.straight;
-                    topScoringCard = theHand[i+4];
-                }
+                //If straightCount reaches 4, it's a straight           
             }
         }
 
@@ -335,7 +345,7 @@ namespace TakeHomeExam
 
             for (int i = 6; i > 0; i--)
             {
-                //Get the card we are checking for a pair.
+                //Get the card we are checking.
                 trioCard = theHand[i];
                 cardCount = 0;
 

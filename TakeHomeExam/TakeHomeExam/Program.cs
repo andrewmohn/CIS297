@@ -12,16 +12,35 @@ namespace TakeHomeExam
         {
             Deck deck = new Deck();
             PlayerHand player = new PlayerHand();
-            PlayingCard[] table = new PlayingCard[5] { new PlayingCard(Suit.spades, Value.six), new PlayingCard(Suit.clubs, Value.three),
-                new PlayingCard(Suit.diamonds, Value.four), new PlayingCard(Suit.clubs, Value.five), new PlayingCard(Suit.clubs, Value.two) };
+            PlayerHand player2 = new PlayerHand();
+            PlayingCard[] table = new PlayingCard[5] {
+                new PlayingCard(Suit.spades, Value.two),
+                new PlayingCard(Suit.clubs, Value.six),
+                new PlayingCard(Suit.diamonds, Value.five),
+                new PlayingCard(Suit.hearts, Value.queen),
+                new PlayingCard(Suit.spades, Value.ten) };
 
-            Console.WriteLine($"Table Cards: {table[0].ToString()}_{table[1].ToString()}_{table[2].ToString()}");
-
-            player.takeCard(new PlayingCard(Suit.diamonds, Value.five));
-            player.takeCard(new PlayingCard(Suit.hearts, Value.king));
+            player.takeCard(new PlayingCard(Suit.diamonds, Value.three));
+            player.takeCard(new PlayingCard(Suit.spades, Value.four));
             player.getTableCards(table);
 
+            player2.takeCard(new PlayingCard(Suit.diamonds, Value.five));
+            player2.takeCard(new PlayingCard(Suit.hearts, Value.two));
+            player2.getTableCards(table);
+
+            Console.WriteLine($"Table Cards: {table[0].ToString()} {table[1].ToString()} {table[2].ToString()}");
+
             player.printAndScoreHand();
+            player2.printAndScoreHand();
+
+            if(player.CompareTo(player2) == -1)
+            {
+                Console.WriteLine("You Loose");
+            }
+            else if(player.CompareTo(player2) == 1)
+            {
+                Console.WriteLine("You Win");
+            }
         }
     }
 }
