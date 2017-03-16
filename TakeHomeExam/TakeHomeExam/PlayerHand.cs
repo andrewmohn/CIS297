@@ -17,6 +17,8 @@ namespace TakeHomeExam
         //Holds the top valued card i.e. the 7 in sevens over twos.
         private PlayingCard topScoringCard;
 
+
+        public PlayingCard[] WholeHand { get { return theHand; } }
         public hands HandValue { get { return ScoredHandType; } }
         public PlayingCard HandHighValue { get { return topScoringCard; } }
 
@@ -28,16 +30,9 @@ namespace TakeHomeExam
         }
 
         //For testing
-        public void printAndScoreHand()
+        public string printHand()
         {
-            scoreTheHand();
-            Console.Write("Your scored hand is: ");
-            for(int i = 0; i < 7; i++)
-            {
-                Console.Write(theHand[i].ToString() + " ");
-            }
-
-            Console.WriteLine($"\nIt is evaluated as a {HandValue}.");
+            return $"{ScoredHandType} with {HandHighValue.ToString()} as the high card";
         }
 
         public void takeCard(PlayingCard card)
@@ -45,6 +40,7 @@ namespace TakeHomeExam
             if(myHand[0] == null)
             {
                 myHand[0] = card;
+                topScoringCard = myHand[0];
             }
             else if(myHand[1] == null)
             {
@@ -496,6 +492,8 @@ namespace TakeHomeExam
         //If this function returns -1, 'this' looses
         public int CompareTo(PlayerHand opponent)
         {
+            scoreTheHand();
+            opponent.scoreTheHand();
             if (HandValue < opponent.HandValue)
             {
                 return -1;
@@ -537,6 +535,11 @@ namespace TakeHomeExam
             }
 
             return null;
+        }
+
+        public override string ToString()
+        {
+            return $"{myHand[0].ToString()} {myHand[1].ToString()}";
         }
     }
 }
