@@ -12,19 +12,19 @@ namespace TakeHomeExam
         private int topCard;
 
         //Constructor creates a deck
-        //suite and value are enum declared in the Program.cs file
+        //Suit and Value are enum declared in the Program.cs file
         public Deck()
         {
             topCard = 0;
             thisDeck = new PlayingCard[52];
 
-            //i increments suite, j increments value
+            //i increments Suit, j increments Value
             for (int i = 0, k = 0; i < 4; i++)
             {
                 //k is incremnted every time to count off 52 cards
                 for (int j = 0; j < 13; j++, k++)
                 {
-                    thisDeck[k] = new PlayingCard((suite)i, (value)j);
+                    thisDeck[k] = new PlayingCard((Suit)i, (Value)j);
                 }
             }
         }

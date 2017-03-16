@@ -10,6 +10,14 @@ namespace TakeHomeExam
     {
         static void Main(string[] args)
         {
+            TexasHoldEm game = new TexasHoldEm();
+            
+            while(true)
+            {
+                game.deal();
+                game.betting();
+                game.showdown();
+            }
         }
     }
 }
