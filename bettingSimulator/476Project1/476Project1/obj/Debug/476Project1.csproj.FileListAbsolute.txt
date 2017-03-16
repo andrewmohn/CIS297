@@ -1,0 +1,6 @@
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\bin\Debug\476Project1.exe.config
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\bin\Debug\476Project1.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\bin\Debug\476Project1.pdb
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\obj\Debug\476Project1.csprojResolveAssemblyReference.cache
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\obj\Debug\476Project1.exe
+C:\Users\Andrew\Documents\GitHub\CIS297\bettingSimulator\476Project1\476Project1\obj\Debug\476Project1.pdb
